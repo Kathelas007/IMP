@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+            type="application/javascript"></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <!--    <script>-->
+    <!--        // $(document).ready(function(){-->
+    <!--        //-->
+    <!--        // }-->
+    <!--        // if ($("#chb1").is(':checked'))-->
+    <!--        //     $("#txtAge").show();  // checked-->
+    <!--        // else-->
+    <!--        //     $("#txtAge").hide();  // unchecked-->
+
+    <!--        $(document).ready(function () {-->
+    <!--            $('input[type="checkbox"]').click(function () {-->
+    <!--                if ($(this).is(":checked")) {-->
+    <!--                    console.log("Checkbox is checked.");-->
+    <!--                } else if ($(this).is(":not(:checked)")) {-->
+    <!--                    console.log("Checkbox is unchecked.");-->
+    <!--                }-->
+    <!--            });-->
+    <!--        });-->
+    <!--    </script>-->
+
+    <title>Demo IMP LEDs</title>
+    <style>
+
+        .bulb {
+            margin: 0 auto;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .on-red {
+            background-color: #F00;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 16px;
+        }
+
+        .off-red {
+            background-color: #A00;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 1px 1px, inset #441313 0 -1px 4px, rgba(255, 0, 0, 0.5) 0 2px 0;
+            /*-webkit-animation: blinkRed;*/
+        }
+
+        .on-blue {
+            background-color: #3F8CFF;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #006 0 -1px 9px, #3F8CFF 0 2px 20px;
+        }
+
+        .off-blue {
+            background-color: #123d6d;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 1px 1px, inset #006 0 -1px 4px, #3F8CFF 0 2px 0;
+            /*-webkit-animation: blinkRed;*/
+        }
+
+        @-webkit-keyframes blinkRed {
+            from {
+                background-color: #F00;
+            }
+            50% {
+                background-color: #A00;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+            }
+            to {
+                background-color: #F00;
+            }
+        }
+
+        .bulb-div {
+            margin-right: 20px;
+            margin-left: 20px
+        }
+
+        .chb-div {
+            margin-top: 20px;;
+        }
+
+    </style>
+</head>
+
+
+<body class="light-blue-skin">
+
+<div class="container-fluid">
+
+    <!--header-->
+    <div class="container">
+        <div class="pb-2 page-header">
+            <h2>ESP8266 LED Controler</h2>
+        </div>
+    </div>
+
+    <!--allert-->
+    <!--alert-success alert-danger-->
+    <div class="container" style="height: 72px">
+        <div class="h-100px alert alert-success alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            This alert box could indicate a successful or positive action.
+        </div>
+    </div>
+
+    <!--leds-->
+    <div class="container">
+        <div class="row" style="margin: 20px">
+
+            <div class="col-lg-2">
+                <div class="d-flex flex-column">
+                    <div class="p-4 bulb-div">
+                        <div id="led1" class="p-2 bulb off-red" style="float: left"></div>
+                        <p style="color: #fff">vypln</p>
+                    </div>
+
+                    <div class="p-4 chb-div">
+                        <input id="chb1" class="p-2" type="checkbox" data-toggle="toggle"
+                               data-onstyle="default" onchange="checkBoxChange()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="d-flex flex-column">
+                    <div class="p-4 bulb-div">
+                        <div id="led2" class="p-2 bulb off-red" style="float: left"></div>
+                        <p style="color: #fff">vypln</p>
+                    </div>
+
+                    <div class="p-4 chb-div">
+                        <input id="chb2" class="p-2" type="checkbox" data-toggle="toggle"
+                               data-onstyle="default">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="d-flex flex-column">
+                    <div id="led3" class="p-4 bulb-div">
+                        <div class="p-2 bulb off-blue" style="float: left"></div>
+                        <p style="color: #fff">vypln</p>
+                    </div>
+
+                    <div class="p-4 chb-div">
+                        <input id="chb3" class="p-2" type="checkbox" data-toggle="toggle"
+                               data-onstyle="default">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modes-->
+    <div class="container" style="margin-top: 30px">
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Test LEDs</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Sequence</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Total Chaos</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+
+
+<script>
+
+    // ********** element handlers ******************************
+
+    function checkBoxChange() {
+        // sendLedUpdate();
+    }
+
+    // ********** XML object ******************************
+
+    function createXmlHttpRequestObject() {
+        var xmlhttp;
+        try {
+            xmlHttp = new XMLHttpRequest(); //should work on all browsers except IE6 or older
+        } catch (e) {
+            try {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHttp"); //browser is IE6 or older
+            } catch (e) {
+                // ignore error
+            }
+        }
+        if (!xmlHttp) {
+            alert("Error creating the XMLHttpRequest object.");
+        } else {
+            return xmlHttp;
+        }
+    }
+
+    // ********** ehelp functions ******************************
+
+    function getLedsState() {
+        var ret = {};
+        var i;
+        for (i = 0; i < 3; i++) {
+            ret[i] = (document.getElementById('chb' + 1).checked) * (2 ** i);
+        }
+        return ret;
+    }
+
+    // ********** communication with ESP ******************************
+
+    function sendLedUpdate() {
+        try {
+            const xmlHttp = createXmlHttpRequestObject();//stores XMLHttpRequestObject
+
+            const ledState = getLedsState();
+            xmlHttp.open("GET", URL + "leds=" + ledState, true);
+            xmlHttp.onreadystatechange = syncLeds();
+            xmlHttp.send(null);
+
+        } catch (e) {
+            alert(e.toString());
+        }
+
+        return false;
+    }
+
+    function sendSequence(seqID) {
+        try {
+            const xmlHttp = createXmlHttpRequestObject();//stores XMLHttpRequestObject
+
+            xmlHttp.open("GET", URL + "seq=" + seqID, true);
+            xmlHttp.onreadystatechange = syncSequence();
+            xmlHttp.send(null);
+
+        } catch (e) {
+            alert(e.toString());
+        }
+
+        return false;
+    }
+
+    function syncLeds() {
+        console.log("Sybcyng LEDs.");
+    }
+
+    function syncSequence() {
+
+    }
+
+
+    // setInterval("downloadData()", 3000);
+
+    // window.onload = function () {
+    //   uploadData();
+    //   downloadData();
+    // }
+    // downloadData();
+
+</script>
+
+</html>
