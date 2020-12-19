@@ -182,8 +182,8 @@
                 </div>
             </div>
             <div class="col-4">
-                <div id="led3" class="p-4 bulb-div">
-                    <div class="p-2 bulb off-blue"></div>
+                <div class="p-4 bulb-div">
+                    <div id="led3" class="p-2 bulb off-blue"></div>
                 </div>
             </div>
         </div>
@@ -313,6 +313,10 @@
             alert(e.toString());
         }
         // enableComp(false);
+
+        document.getElementById("led3").classList.remove("off-blue");
+        document.getElementById("led3").classList.add("on-blue");
+
         return false;
     }
 
