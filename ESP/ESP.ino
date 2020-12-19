@@ -52,16 +52,13 @@ void handleLeds(AsyncWebServerRequest * request) {
 
   leds.state[ledId] = state; 
 
-  request->send(200, "application/json", "{\"message\":\"Welcome\"}");
-  
-//
-//  AsyncResponseStream *response = request->beginResponseStream("application/json");
-//  DynamicJsonBuffer jsonBuffer;
-//  JsonObject &root = jsonBuffer.createObject();
-//  root["led"] = ledId;
-//  root["state"] = state;
-//  root.printTo(*response);
-//  request->send(response);
+  AsyncResponseStream *response = request->beginResponseStream("application/json");
+  DynamicJsonBuffer jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+  root["led"] = ledId;
+  root["state"] = state;
+  root.printTo(*response);
+  request->send(response);
 }
 
 void handleSequences(AsyncWebServerRequest * request) {

@@ -312,9 +312,7 @@
         } catch (e) {
             alert(e.toString());
         }
-
         // enableComp(false);
-
         return false;
     }
 
@@ -334,25 +332,17 @@
     }
 
     function syncLeds() {
-        let response = JSON.parse(xmlHttp.responseText);
-        let id = "led" + response["id"].toString();
+        if ((xmlHttp.readyState === 4) && (xmlHttp.status === 200)) {
+            let response = JSON.parse(xmlHttp.responseText);
+            let id = "led" + (response["led"] + 1).toString();
 
-        alert(xmlHttp.responseText)
+            let color = response["led"] === 2 ? "blue" : "red";
+            let remove = response["state"] === 0 ? "on" : "off";
+            let add = response["state"] !== 0 ? "on" : "off";
 
-        if ((xmlHttp.readyState == 4) && (xmlHttp.status == 200)) {
-            alert(xmlHttp.responseText)
+            document.getElementById(id).classList.remove(remove + "-" + color);
+            document.getElementById(id).classList.add(add + "-" + color);
         }
-
-        let color = response["id"] === 2 ? "blue" : "red";
-        let remove = response["state"] === 0 ? "on" : "off";
-        let add = response["state"] !== 0 ? "on" : "off";
-
-        document.getElementById(id).classList.remove(remove + "-" + color);
-        document.getElementById(id).classList.add(add + "-" + color);
-
-        document.getElementById("led1").classList.remove("off-red");
-        document.getElementById("led1").classList.add("on-red");
-
     }
 
     function syncSequence() {
