@@ -3,14 +3,81 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src="src/jquery-3.3.1.min.js"></script>
     <script src="src/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="src/bootstrap.min.css">
-    
 
-    <title>Demo IMP LEDs</title>
+    <link rel="stylesheet" type="text/css" href="src/bootstrap.min.css">
+
     <style>
 
+        /* ************** toggle box ***************************/
+        /*https://www.w3schools.com/howto/howto_css_switch.asp*/
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* ************** LEDs ***************************/
         .bulb {
             margin: 0 auto;
             width: 24px;
@@ -58,11 +125,8 @@
             margin-left: 20px
         }
 
-        .chb-div {
-            margin-top: 20px;;
-        }
-
     </style>
+    <title>Demo IMP LEDs</title>
 </head>
 
 
@@ -71,99 +135,88 @@
 <div class="container-fluid">
 
     <!--header-->
-    <div class="container">
+    <div class="container mt-3">
         <div class="pb-2 page-header">
             <h2>ESP8266 LED Controler</h2>
         </div>
     </div>
 
-    <!--allert-->
-    <!--alert-success alert-danger-->
+    <!--alert-->
     <div class="container" style="height: 72px">
         <div class="row">
-            <div class="h-100px alert alert-success alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <div id="alert-box" class="h-100px alert alert-success alert-dismissible">
+                <!--                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
                 This alert box could indicate a successful or positive action.
             </div>
         </div>
     </div>
 
-    <div class="card mt-5">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-4">
-                    <div class="card-text">text</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!--leds-->
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-4">
-                <div class="d-flex flex-column">
-                    <div class="p-4 bulb-div">
-                        <div id="led1" class="p-2 bulb off-red" style="float: left"></div>
-                        <p style="color: #fff">vypln</p>
-                    </div>
+    <div class="container mt-5">
 
-                    <div class="p-4 chb-div">
-                        <input id="chb1" class="p-2" type="checkbox" data-toggle="toggle"
-                               data-onstyle="default" onchange="checkBoxChange()">
+        <!--names -->
+        <div class="row">
+            <div class="col-4 text-center">
+                LED 1
+            </div>
+            <div class="col-4 text-center">
+                LED 2
+            </div>
+            <div class="col-4 text-center">
+                LED 3
+            </div>
+        </div>
+
+        <!--LEDs -->
+        <div class="row ">
+            <div class="col-4">
+                <div class="p-4 bulb-div">
+                    <div id="led1" class="p-2 bulb off-red"></div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-4 bulb-div">
+                    <div id="led2" class="p-2 bulb off-red">
                     </div>
                 </div>
             </div>
-
-
-            <!--            <div class="d-flex flex-column">-->
-            <!--                <div class="p-4 bulb-div">-->
-            <!--                    <div id="led1" class="p-2 bulb off-red" style="float: left"></div>-->
-            <!--                    <p style="color: #fff">vypln</p>-->
-            <!--                </div>-->
-
-            <!--                <div class="p-4 chb-div">-->
-            <!--                    <input id="chb1" class="p-2" type="checkbox" data-toggle="toggle"-->
-            <!--                           data-onstyle="default" onchange="checkBoxChange()">-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!--            <div class="col-lg-2">-->
-            <!--                <div class="d-flex flex-column">-->
-            <!--                    <div class="p-4 bulb-div">-->
-            <!--                        <div id="led2" class="p-2 bulb off-red" style="float: left"></div>-->
-            <!--                        <p style="color: #fff">vypln</p>-->
-            <!--                    </div>-->
-
-            <!--                    <div class="p-4 chb-div">-->
-            <!--                        <input id="chb2" class="p-2" type="checkbox" data-toggle="toggle"-->
-            <!--                               data-onstyle="default">-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!--            <div class="col-lg-2">-->
-            <!--                <div class="d-flex flex-column">-->
-            <!--                    <div id="led3" class="p-4 bulb-div">-->
-            <!--                        <div class="p-2 bulb off-blue" style="float: left"></div>-->
-            <!--                        <p style="color: #fff">vypln</p>-->
-            <!--                    </div>-->
-
-            <!--                    <div class="p-4 chb-div">-->
-            <!--                        <input id="chb3" class="p-2" type="checkbox" data-toggle="toggle"-->
-            <!--                               data-onstyle="default">-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-
+            <div class="col-4">
+                <div id="led3" class="p-4 bulb-div">
+                    <div class="p-2 bulb off-blue"></div>
+                </div>
+            </div>
         </div>
+
+        <!--toggles -->
+        <div class="row">
+            <div class="col-4" style="text-align: center">
+                <label class="switch">
+                    <input id="chb1" type="checkbox" onchange="checkBoxChange(this)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="col-4" style="text-align: center">
+                <label class="switch">
+                    <input id="chb2" type="checkbox" onchange="checkBoxChange(this)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="col-4" style="text-align: center">
+                <label class="switch">
+                    <input id="chb3" type="checkbox" onchange="checkBoxChange(this)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
     </div>
 
-    <!-- modes-->
-    <div class="container" style="margin-top: 30px">
 
-        <table class="table table-hover">
+    <!-- modes-->
+    <div class="container mt-3">
+
+        <table id="seq-tb" class="table table-hover">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -171,15 +224,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr onclick="rowClicked(this)">
                 <th scope="row">1</th>
                 <td>Test LEDs</td>
             </tr>
-            <tr>
+            <tr onclick="rowClicked(this)">
                 <th scope="row">2</th>
                 <td>Sequence</td>
             </tr>
-            <tr>
+            <tr onclick="rowClicked(this)">
                 <th scope="row">3</th>
                 <td>Total Chaos</td>
             </tr>
@@ -188,19 +241,20 @@
     </div>
 
 </div>
-<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
-
 </body>
-
 
 <script type="text/javascript">
 
     // ********** element handlers ******************************
 
-    function checkBoxChange() {
-        // sendLedUpdate();
+    function checkBoxChange(checkBox) {
+        let state = checkBox.checked ? 1 : 0;
+        sendLedChanged(checkBox.id.slice(-1) - 1, state);
+    }
+
+    function rowClicked(row) {
+        // disable table and leds
+        sendSequenceSelected(row.rowIndex - 1);
     }
 
     // ********** XML object ******************************
@@ -223,7 +277,7 @@
         }
     }
 
-    // ********** ehelp functions ******************************
+    // ********** help functions ******************************
 
     function getLedsState() {
         var ret = {};
@@ -234,31 +288,43 @@
         return ret;
     }
 
+    function enableComp(enable) {
+        let chb = ["chb1", "chb2", "chb3"];
+        for (let i = 0; i < chb.lengthl; i++) {
+            document.getElementById(chb[i]).disabled = true;
+        }
+
+        document.getElementById("seq-tb").disabled = true;
+
+        console.log("disabling")
+    }
+
     // ********** communication with ESP ******************************
 
-    function sendLedUpdate() {
+    function sendLedChanged(ledId, state) {
         try {
-            const xmlHttp = createXmlHttpRequestObject();//stores XMLHttpRequestObject
+            const xmlHttp = createXmlHttpRequestObject();
 
-            const ledState = getLedsState();
-            xmlHttp.open("GET", URL + "?leds=" + ledState, true);
-            xmlHttp.onreadystatechange = syncLeds();
-            xmlHttp.send(null);
+            xmlHttp.open("GET", "led?id=" + ledId + "&state=" + state, true);
+            xmlHttp.onreadystatechange = syncLeds;
+            xmlHttp.send();
 
         } catch (e) {
             alert(e.toString());
         }
 
+        // enableComp(false);
+
         return false;
     }
 
-    function sendSequence(seqID) {
+    function sendSequenceSelected(seqID) {
         try {
-            const xmlHttp = createXmlHttpRequestObject();//stores XMLHttpRequestObject
+            const xmlHttp = createXmlHttpRequestObject();
 
-            xmlHttp.open("GET", URL + "seq=" + seqID, true);
-            xmlHttp.onreadystatechange = syncSequence();
-            xmlHttp.send(null);
+            xmlHttp.open("GET", "seq?id=" + seqID, true);
+            xmlHttp.onreadystatechange = syncSequence;
+            xmlHttp.send();
 
         } catch (e) {
             alert(e.toString());
@@ -268,7 +334,25 @@
     }
 
     function syncLeds() {
-        console.log("Sybcing LEDs.");
+        let response = JSON.parse(xmlHttp.responseText);
+        let id = "led" + response["id"].toString();
+
+        alert(xmlHttp.responseText)
+
+        if ((xmlHttp.readyState == 4) && (xmlHttp.status == 200)) {
+            alert(xmlHttp.responseText)
+        }
+
+        let color = response["id"] === 2 ? "blue" : "red";
+        let remove = response["state"] === 0 ? "on" : "off";
+        let add = response["state"] !== 0 ? "on" : "off";
+
+        document.getElementById(id).classList.remove(remove + "-" + color);
+        document.getElementById(id).classList.add(add + "-" + color);
+
+        document.getElementById("led1").classList.remove("off-red");
+        document.getElementById("led1").classList.add("on-red");
+
     }
 
     function syncSequence() {
