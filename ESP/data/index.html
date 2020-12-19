@@ -138,22 +138,24 @@
     <div class="container mt-3">
         <div class="pb-2 page-header">
             <h2>ESP8266 LED Controler</h2>
+            <hr/>
         </div>
+
     </div>
 
-    <!--alert-->
-    <div class="container" style="height: 72px">
-        <div class="row">
-            <div id="alert-box" class="h-100px alert alert-success alert-dismissible">
-                <!--                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
-                This alert box could indicate a successful or positive action.
-            </div>
-        </div>
-    </div>
+<!--    &lt;!&ndash;alert&ndash;&gt;-->
+<!--    <div class="container" style="height: 72px">-->
+<!--        <div class="row">-->
+<!--            <div id="alert-box" class="h-100px alert alert-success alert-dismissible">-->
+<!--                &lt;!&ndash;                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>&ndash;&gt;-->
+<!--                This alert box could indicate a successful or positive action.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
 
     <!--leds-->
-    <div class="container mt-5">
+    <div class="container mt-3">
 
         <!--names -->
         <div class="row">
@@ -209,14 +211,21 @@
                 </label>
             </div>
         </div>
-
     </div>
 
 
     <!-- modes-->
-    <div class="container mt-3">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-6">
+                Sequence state:
+            </div>
+            <div id="state" class="col-5">
+                Ready
+            </div>
+        </div>
 
-        <table id="seq-tb" class="table table-hover">
+        <table id="seq-tb" class="table mt-2">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -253,7 +262,7 @@
     }
 
     function rowClicked(row) {
-        // disable table and leds
+        document.getElementById("state").textContent = "Running"
         sendSequenceSelected(row.rowIndex - 1);
     }
 
@@ -262,10 +271,10 @@
     function createXmlHttpRequestObject() {
         let xmlhttp;
         try {
-            xmlHttp = new XMLHttpRequest(); //should work on all browsers except IE6 or older
+            xmlHttp = new XMLHttpRequest();
         } catch (e) {
             try {
-                xmlHttp = new ActiveXObject("Microsoft.XMLHttp"); //browser is IE6 or older
+                xmlHttp = new ActiveXObject("Microsoft.XMLHttp");
             } catch (e) {
                 // ignore error
             }
@@ -277,27 +286,6 @@
         }
     }
 
-    // ********** help functions ******************************
-
-    function getLedsState() {
-        var ret = {};
-        var i;
-        for (i = 0; i < 3; i++) {
-            ret[i] = (document.getElementById('chb' + 1).checked) * (2 ** i);
-        }
-        return ret;
-    }
-
-    function enableComp(enable) {
-        let chb = ["chb1", "chb2", "chb3"];
-        for (let i = 0; i < chb.lengthl; i++) {
-            document.getElementById(chb[i]).disabled = true;
-        }
-
-        document.getElementById("seq-tb").disabled = true;
-
-        console.log("disabling")
-    }
 
     // ********** communication with ESP ******************************
 
@@ -312,10 +300,6 @@
         } catch (e) {
             alert(e.toString());
         }
-        // enableComp(false);
-
-        document.getElementById("led3").classList.remove("off-blue");
-        document.getElementById("led3").classList.add("on-blue");
 
         return false;
     }
@@ -326,6 +310,7 @@
 
             xmlHttp.open("GET", "seq?id=" + seqID, true);
             xmlHttp.onreadystatechange = syncSequence;
+            xmlHttp.timeout = 20000;
             xmlHttp.send();
 
         } catch (e) {
@@ -350,17 +335,11 @@
     }
 
     function syncSequence() {
-        console.log("Syncing Seq.")
+        if ((xmlHttp.readyState === 4) && (xmlHttp.status === 200)) {
+            document.getElementById("state").textContent = "Done"
+        }
     }
 
-
-    // setInterval("downloadData()", 3000);
-
-    // window.onload = function () {
-    //   uploadData();
-    //   downloadData();
-    // }
-    // downloadData();
 
 </script>
 
