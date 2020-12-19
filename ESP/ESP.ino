@@ -41,7 +41,9 @@ const char *password = "esp123456789";
 
 void handleRoot(AsyncWebServerRequest * request) {
   Serial.println("handling root");
-  request->send(SPIFFS, "/index.html");
+  AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/index.html.gz", "text/html");
+  response->addHeader("Content-Encoding", "gzip");
+  request->send(response);
 }
 
 void handleLeds(AsyncWebServerRequest * request) {
@@ -105,10 +107,10 @@ void run_seq(int seq) {
       digitalWrite(leds.nums[0], leds.on_s[0]);
       digitalWrite(leds.nums[1], leds.on_s[1]);
 
-      for (int i = 0; i < 20; i++) {
+      for (int i = 0; i < 15; i++) {
         digitalWrite(leds.nums[i % 3], leds.off_s[i]);
         digitalWrite(leds.nums[(i + 2) % 3], leds.on_s[i]);
-        delay(200);
+        delay(100);
       }
       break;
     case 2:
@@ -174,6 +176,21 @@ void setup() {
   server.on("/src/bootstrap.min.css", HTTP_GET, [](AsyncWebServerRequest * request) {
     request->send(SPIFFS, "/src/bootstrap.min.css", "text/css");
   });
+
+  server.on("/src/all.css.gz", HTTP_GET, [](AsyncWebServerRequest * request) {
+    AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/src/all.css.gz", "text/css");
+    response->addHeader("Content-Encoding", "gzip");
+    request->send(response);
+  });
+
+    server.on("/src/all.js.gz", HTTP_GET, [](AsyncWebServerRequest * request) {
+    AsyncWebServerResponse* response = request->beginResponse(SPIFFS, "/src/all.js.gz", "text/javascript");
+    response->addHeader("Content-Encoding", "gzip");
+    request->send(response);
+  });
+
+
+
 
   server.begin();
   Serial.println("HTTP server is running\n\n\n");
